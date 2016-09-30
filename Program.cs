@@ -7,30 +7,12 @@ using System.Text;
 namespace pyramydPath {
     class Program {
         static void Main(string[] args) {
-            //int[][] testPath = new int[4][];
-            //testPath[0] = new int[] { 1 };
-            //testPath[1] = new int[] { 2, 3 };
-            //testPath[2] = new int[] { 4, 5, 6 };
-            //testPath[3] = new int[] { 10, 9, 8, 7 };
-            //Pyramyd pyr = new Pyramyd(testPath);
-            //Console.WriteLine(pyr.findMaxSum());
-            //Console.ReadLine();
-            List<int[]> testPathList = new List<int[]>();
             try {
-                using (StreamReader sr = new StreamReader("pyramyd.txt")) {
-                    String line;
-                    while ((line = sr.ReadLine()) != null) {
-                        string[] sNumbersInRow = line.Split(new []{" "},System.StringSplitOptions.RemoveEmptyEntries);
-                        
-                        int[] numbersInRow = new int[sNumbersInRow.Length];
-                        Console.WriteLine(sNumbersInRow.Length);
-                        Console.WriteLine(line);
-                    }
-                    
-                }
-            } catch (Exception e) {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
+                var pyr = Pyramyd.ReadFromFile("pyramyd.txt");
+                pyr.Print();
+                Console.WriteLine("\n{0}", pyr.findMaxSum());
+            } catch (Exception ex) {
+                Console.WriteLine("Unhandled exception. Stopped.");
             }
             Console.ReadLine();
         }
@@ -52,6 +34,50 @@ namespace pyramydPath {
                 this.path[i] = new int[path[i].Length];
                 this.sums[i] = new int[path[i].Length];
                 Array.Copy(path[i], this.path[i], path[i].Length); //TODO: Add elements if it is smaller
+            }
+        }
+        public static Pyramyd ReadFromFile(string filename, int verbose = 0) { //"pyramyd.txt"
+            List<int[]> testPathList = new List<int[]>();
+            try {
+                using (StreamReader sr = new StreamReader(filename)) {
+                    String line;
+                    while ((line = sr.ReadLine()) != null) {
+                        string[] sNumbersInRow = line.Split(new[] { " " }, System.StringSplitOptions.RemoveEmptyEntries);
+                        int[] numbersInRow = new int[sNumbersInRow.Length];
+                        for (int i = 0; i < sNumbersInRow.Length; i++) {
+                            numbersInRow[i] = Int32.Parse(sNumbersInRow[i]);
+                        }
+                        testPathList.Add(numbersInRow);
+                        if (verbose > 0) {
+                            Console.WriteLine(String.Join(" ", numbersInRow));
+                            Console.WriteLine(line);
+                        }
+                    }
+
+                }
+            } catch (IOException ex) {
+                Console.WriteLine("The file ({0}) could not be read:\n{1}", filename, ex.Message);
+                throw;
+            } catch (FormatException) {
+                Console.WriteLine("Format exception in {0}", filename);
+                throw;
+            } catch (OverflowException) {
+                Console.WriteLine("Using too big numbers in {0} lead to overflow.", filename);
+                throw;
+            }
+            int[][] path = testPathList.ToArray();
+            return new Pyramyd(path);
+        }
+        public void Print() {
+            if (this.path == null) {
+                Console.WriteLine("Empty pyramyd");
+                return;
+            }
+            for (int i = 0; i < path.Length; i++) {
+                for (int j = 0; j < path[i].Length; j++) {
+                    Console.Write("{0}\t", path[i][j]);
+                }
+                Console.WriteLine();
             }
         }
         public int findMaxSum() {
