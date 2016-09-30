@@ -8,9 +8,20 @@ namespace pyramydPath {
     class Program {
         static void Main(string[] args) {
             try {
+                Console.WriteLine("Triangle from example:");
                 var pyr = Pyramyd.ReadFromFile("pyramyd.txt");
                 pyr.Print();
-                Console.WriteLine("\n{0}", pyr.findMaxSum());
+                Console.WriteLine("\nResult:{0}", pyr.findMaxSum());
+
+                Console.WriteLine("\nFirst task:");
+                pyr = Pyramyd.ReadFromFile("task.txt");
+                pyr.Print(); 
+                Console.WriteLine("\nResult:{0}", pyr.findMaxSum());
+
+                Console.WriteLine("\nResult of additional task:");
+                pyr = Pyramyd.ReadFromFile("additionalTask.txt");
+                //pyr.Print(); //Too fat to be fully seen in console
+                Console.WriteLine(pyr.findMaxSum());
             } catch (Exception ex) {
                 Console.WriteLine("Unhandled exception. Stopped.");
             }
