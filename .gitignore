@@ -8,6 +8,9 @@
 
 # Build results
 
+#enable .txt files in build since they are task files
+![Bb]in/[Ddebug]/*.txt
+
 [Dd]ebug/
 [Rr]elease/
 x64/
