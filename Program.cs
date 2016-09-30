@@ -21,8 +21,8 @@ namespace pyramydPath {
                 Console.WriteLine("\nResult of additional task:");
                 pyr = Pyramyd.ReadFromFile("additionalTask.txt");
                 //pyr.Print(); //Too fat to be fully seen in console
-                Console.WriteLine(pyr.findMaxSum());
-            } catch (Exception ex) {
+                Console.Write(pyr.findMaxSum());
+            } catch (Exception) {
                 Console.WriteLine("Unhandled exception. Stopped.");
             }
             Console.ReadLine();
